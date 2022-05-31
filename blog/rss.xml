@@ -9,6 +9,16 @@
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh-Hans</language>
         <item>
+            <title><![CDATA[为你的博客配置analytics]]></title>
+            <link>https://blog.xuzhuo.xyz/blog/set-up-your-umami</link>
+            <guid>set-up-your-umami</guid>
+            <pubDate>Tue, 31 May 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[running-on-railway]]></description>
+            <content:encoded><![CDATA[<blockquote><p><a href="https://umami.is/docs/running-on-railway" target="_blank" rel="noopener noreferrer">running-on-railway</a></p></blockquote>]]></content:encoded>
+            <category>docusaurus</category>
+            <category>analytics</category>
+        </item>
+        <item>
             <title><![CDATA[重拾博客]]></title>
             <link>https://blog.xuzhuo.xyz/blog/welcome</link>
             <guid>welcome</guid>

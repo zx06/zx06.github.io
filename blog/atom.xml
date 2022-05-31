@@ -8,6 +8,16 @@
     <subtitle>My Site Blog</subtitle>
     <icon>https://blog.xuzhuo.xyz/img/favicon.ico</icon>
     <entry>
+        <title type="html"><![CDATA[为你的博客配置analytics]]></title>
+        <id>set-up-your-umami</id>
+        <link href="https://blog.xuzhuo.xyz/blog/set-up-your-umami"/>
+        <updated>2022-05-31T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[running-on-railway]]></summary>
+        <content type="html"><![CDATA[<blockquote><p><a href="https://umami.is/docs/running-on-railway" target="_blank" rel="noopener noreferrer">running-on-railway</a></p></blockquote>]]></content>
+        <category label="docusaurus" term="docusaurus"/>
+        <category label="analytics" term="analytics"/>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[重拾博客]]></title>
         <id>welcome</id>
         <link href="https://blog.xuzhuo.xyz/blog/welcome"/>
