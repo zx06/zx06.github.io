@@ -87,7 +87,7 @@ const config = {
             items: [
               {
                 label: "博客访问量统计",
-                to: "https://umami.xuzhuo.xyz/website/1/blog",
+                to: "https://umami.xuzhuo.xyz/share/uvNw2ixg/blog",
               },
             ],
           },
