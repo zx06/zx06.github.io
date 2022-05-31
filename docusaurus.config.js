@@ -6,8 +6,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
+  title: "zx06",
+  tagline: "我的博客和文档站",
   url: "https://blog.xuzhuo.xyz",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -59,7 +59,7 @@ const config = {
         src: "https://umami.xuzhuo.xyz/umami.js", // Instructions below on how to find this
       },
       navbar: {
-        title: "My Site",
+        title: "zx06",
         logo: {
           alt: "My Site Logo",
           src: "img/logo.svg",
@@ -69,9 +69,9 @@ const config = {
             type: "doc",
             docId: "intro",
             position: "left",
-            label: "Tutorial",
+            label: "文档",
           },
-          { to: "/blog", label: "Blog", position: "left" },
+          { to: "/blog", label: "博客", position: "left" },
           {
             href: "https://github.com/zx06",
             label: "GitHub",
