@@ -37,14 +37,14 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/zx06/zx06.github.io/edit/main/',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/zx06/zx06.github.io/edit/main/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -56,6 +56,10 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      umami: {
+        websiteid: "9b24aa2f-1e38-4893-a7c8-3a28c6c567fd", // Insctructions below on how to find this
+        src: "https://umami.xuzhuo.xyz/umami.js", // Instructions below on how to find this
+      },
       navbar: {
         title: 'My Site',
         logo: {
@@ -127,6 +131,7 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+    plugins: ["docusaurus-plugin-umami"],
 };
 
 module.exports = config;

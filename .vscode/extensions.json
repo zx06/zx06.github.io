@@ -1,5 +1,7 @@
 {
     "recommendations": [
-        "KnisterPeter.vscode-commitizen"
+        "knisterpeter.vscode-commitizen",
+        "silvenon.mdx",
+        "GitHub.copilot"
     ]
 }
