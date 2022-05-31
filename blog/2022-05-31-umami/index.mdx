@@ -4,4 +4,17 @@ title: 为你的博客配置analytics
 tags: [docusaurus, analytics]
 ---
 # 使用Railway部署umami
-> [running-on-railway](https://umami.is/docs/running-on-railway)
+> 可以参考此处一键部署 [running-on-railway](https://umami.is/docs/running-on-railway)  
+> 但是我这边选择的是使用docker镜像在Railway上部署  
+
+## 创建一个gitthub项目
+新建一个Dockerfile
+```dockerfile
+FROM ghcr.io/mikecao/umami:postgresql-v1.31.0
+ARG PORT
+ARG DATABASE_TYPE postgresql
+ARG DATABASE_URL
+ARG HASH_SALT
+```
+## 去railway上新建一个项目
+*todo*
