@@ -39,7 +39,10 @@ const config = {
           editUrl: "https://github.com/zx06/zx06.github.io/edit/main/",
         },
         blog: {
+          blogSidebarTitle: "全部博文",
           showReadingTime: true,
+          blogSidebarCount: "ALL", // [ALL, number]
+          postsPerPage: 10,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/zx06/zx06.github.io/edit/main/",
@@ -119,7 +122,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ['docker','java'],
+        additionalLanguages: ["docker", "java"],
       },
     }),
   plugins: ["docusaurus-plugin-umami"],
