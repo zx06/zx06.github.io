@@ -72,9 +72,9 @@ const config = {
             type: "doc",
             docId: "intro",
             position: "left",
-            label: "文档",
+            label: "docs",
           },
-          { to: "/blog", label: "博客", position: "left" },
+          { to: "/blog", label: "blog", position: "left" },
           {
             href: "https://github.com/zx06",
             label: "GitHub",
@@ -86,10 +86,10 @@ const config = {
         style: "dark",
         links: [
           {
-            title: "我的网站",
+            title: "my site",
             items: [
               {
-                label: "博客访问量统计",
+                label: "analytics",
                 to: "https://umami.xuzhuo.xyz/share/uvNw2ixg/blog",
               },
             ],
