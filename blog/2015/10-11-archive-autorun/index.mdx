@@ -1,0 +1,37 @@
+---
+slug: archive-autorun
+title: 修改rc.local文件，设置开机启动
+authors: [zx06]
+tags: [linux, 树莓派]
+---
+> 为了在树莓派启动的时候运行一个命令或程序，你需要将命令添加到rc.local文件中。这对于想要在树莓派接通电源后无需配置直接运行程序，或者不希望每次都手动启动程序的情况非常有用。
+
+* ## 编辑rc.local文件
+
+``` bash
+pi@raspberrypi / $ sudo nano /etc/rc.local
+```
+``` bash
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+
+exit 0
+
+```
+在eixt 0 前面加入要执行的命令 **'/bin/oraynewph status &'** #如果你的命令需要长时间运行（例如死循环）或者运行后不能退出，那么你必须确保在命令的最后添加“&”符号让命令运行在其它进程

@@ -119,7 +119,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ['docker'],
+        additionalLanguages: ['docker','java'],
       },
     }),
   plugins: ["docusaurus-plugin-umami"],
