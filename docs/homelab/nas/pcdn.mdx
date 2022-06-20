@@ -1,0 +1,21 @@
+---
+title: 网心云pcdn配置
+draft: true
+---
+```yaml title="docker-compose.yml"
+version: '3'
+
+services:     
+  ttnode:
+    image: onething1/wxedge:latest
+    container_name: wxedge
+    hostname: wxedge1
+    privileged: true
+    restart: always
+    network_mode: "host"
+    volumes:
+      - /share/pcdn/wxedge:/storage:rw
+    tmpfs:
+      - /tmp
+      - /run
+```

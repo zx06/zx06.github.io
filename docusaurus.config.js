@@ -37,6 +37,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/zx06/zx06.github.io/edit/main/",
+          showLastUpdateTime: true,
         },
         blog: {
           blogSidebarTitle: "全部博文",
