@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkblog=self.webpackChunkblog||[]).push([[2896],{2048:function(a){a.exports=JSON.parse('{"label":"smaba","permalink":"/blog/tags/smaba","allTagsPath":"/blog/tags","count":1}')}}]);
