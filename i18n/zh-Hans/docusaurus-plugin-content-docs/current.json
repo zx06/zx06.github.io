@@ -18,5 +18,13 @@
   "sidebar.tutorialSidebar.category.redis": {
     "message": "redis",
     "description": "The label for category redis in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.homelab": {
+    "message": "homelab",
+    "description": "The label for category homelab in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.nas": {
+    "message": "nas",
+    "description": "The label for category nas in sidebar tutorialSidebar"
   }
 }
