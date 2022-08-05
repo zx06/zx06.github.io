@@ -1,10 +1,37 @@
 ---
-slug: struct-compare
-title: golang类型比较
+slug: golang-type
+title: golang类型
 authors: [zx06]
 tags: [go]
 ---
+## golang类型
+
+### 值类型
+
+- int
+- float
+- bool
+- string
+- struct
+- array
+- ...
+
+### 引用类型
+
+- pointer
+- slice
+- map
+- channel
+- interface
+- function
+- ...
+
+## 类型比较
+
 值类型才能被比较,引用类型不能被比较,参考下面代码
+
+> ps: 当struct,array包含引用类型时,也不能比较了
+
 ```go 
 package main
 
