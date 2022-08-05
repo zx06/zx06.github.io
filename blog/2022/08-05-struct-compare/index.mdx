@@ -1,0 +1,92 @@
+---
+slug: struct-compare
+title: golang类型比较
+authors: [zx06]
+tags: [go]
+---
+值类型才能被比较,引用类型不能被比较,参考下面代码
+```go 
+package main
+
+import "testing"
+
+type V1 struct {
+	X int
+}
+
+type ValueType struct {
+	A int
+	B string
+	C bool
+	D V1
+}
+
+type RefType struct {
+	// slice 是引用类型
+	A []string
+}
+
+type RefType2 struct {
+	// array 是值类型
+	A [2]string
+}
+
+type RefType3 struct {
+	// map 是引用类型
+	A map[string]string
+}
+
+func TestValueTypeCompare(t *testing.T) {
+	v1 := ValueType{1, "a", true, V1{1}}
+	v2 := ValueType{1, "a", true, V1{1}}
+	v3 := ValueType{1, "a", false, V1{1}}
+	if v1 != v2 {
+		t.Errorf("%v != %v", v1, v2)
+	}
+	if v1 == v3 {
+		t.Errorf("%v == %v", v1, v3)
+	}
+
+}
+
+// 编译失败，因为结构体中的字段是引用类型
+// func TestRefType(t *testing.T) {
+// 	v1 := RefType{[]string{"a", "b"}}
+// 	v2 := RefType{[]string{"a", "b"}}
+// 	v3 := RefType{[]string{"a", "c"}}
+// 	if v1 == v2 {
+// 		t.Errorf("%v == %v", v1, v2)
+// 	}
+// 	if v1 != v3 {
+// 		t.Errorf("%v != %v", v1, v3)
+// 	}
+// }
+
+func TestRefType2(t *testing.T) {
+	v1 := RefType2{[2]string{"a", "b"}}
+	v2 := RefType2{[2]string{"a", "b"}}
+	v3 := RefType2{[2]string{"a", "c"}}
+	if v1 != v2 {
+		t.Errorf("%v != %v", v1, v2)
+	}
+	if v1 == v3 {
+		t.Errorf("%v == %v", v1, v3)
+	}
+
+}
+
+// 编译失败，因为结构体中的字段是引用类型
+// func TestRefType3(t *testing.T) {
+// 	v1:= RefType3{map[string]string{"a":"b"}}
+// 	v2:= RefType3{map[string]string{"a":"b"}}
+// 	v3:= RefType3{map[string]string{"a":"c"}}
+// 	if v1 != v2 {
+// 		t.Errorf("%v != %v", v1, v2)
+// 	}
+// 	if v1 == v3 {
+// 		t.Errorf("%v == %v", v1, v3)
+// 	}
+
+// }
+
+```
