@@ -1,7 +1,7 @@
 {
     "recommendations": [
         "knisterpeter.vscode-commitizen",
-        "silvenon.mdx",
-        "GitHub.copilot"
+        "github.copilot",
+        "unifiedjs.vscode-mdx"
     ]
 }
