@@ -3,5 +3,356 @@ slug: otel
 title: opentelemetry
 authors: [zx06]
 tags: [otel, opentelemetry]
-draft: true
+# draft: true
 ---
+# 部署
+## k8s yaml
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-query
+spec:
+  selector:
+    matchLabels:
+      app: jaeger-query
+  template:
+    metadata:
+      labels:
+        app: jaeger-query
+    spec:
+      containers:
+        - name: jaeger-query
+          image: jaegertracing/jaeger-query:1.37.0
+          envFrom:
+            - configMapRef:
+                name: jaeger
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 16686
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-query
+spec:
+  selector:
+    app: jaeger-query
+  ports:
+    - name: jaeger-query
+      port: 16686
+      targetPort: 16686
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jaeger-query
+  labels:
+    name: jaeger-query
+spec:
+  rules:
+    - host: jaeger.otel.dev
+      http:
+        paths:
+          - backend:
+              serviceName: jaeger-query
+              servicePort: 16686
+            path: /
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-collector
+spec:
+  selector:
+    matchLabels:
+      app: jaeger-collector
+  template:
+    metadata:
+      labels:
+        app: jaeger-collector
+    spec:
+      containers:
+        - name: jaeger-collector
+          image: jaegertracing/jaeger-collector:1.37.0
+          envFrom:
+            - configMapRef:
+                name: jaeger
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 14250
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-collector
+spec:
+  selector:
+    app: jaeger-collector
+  ports:
+    - name: jaeger-collector-grpc
+      port: 14250
+      targetPort: 14250
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: spark-dependencies
+spec:
+  schedule: "0 * * * *"
+  successfulJobsHistoryLimit: 10
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: spark-dependencies
+              image: jaegertracing/spark-dependencies:latest
+              envFrom:
+                - configMapRef:
+                    name: jaeger
+          restartPolicy: OnFailure
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+spec:
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:0.58.0
+          args:
+            - --config
+            - /etc/otelcol/otel-collector-config.yml
+          volumeMounts:
+            - mountPath: /etc/otelcol/
+              name: otel-collector-config
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+          ports:
+            # otel-grpc
+            - containerPort: 4317
+            # otel-http
+            - containerPort: 4318
+            # jaeger thrift_http
+            - containerPort: 14268
+            # jaeger thrift_compact
+            - containerPort: 6831
+            # prometheus
+            - containerPort: 8889
+      volumes:
+        - name: otel-collector-config
+          configMap:
+            name: otel-collector
+            items:
+              - key: otel-collector-config
+                path: otel-collector-config.yml
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+spec:
+  selector:
+    app: otel-collector
+  ports:
+    - name: prometheus
+      port: 8889
+      targetPort: 8889
+    - name: otel-collector-grpc
+      port: 4317
+      targetPort: 4317
+    - name: otel-collector-http
+      port: 4318
+      targetPort: 4318
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector-node-port
+spec:
+  selector:
+    app: otel-collector
+  ports:
+    - name: otel-collector-grpc
+      port: 4317
+      targetPort: 4317
+    - name: otel-collector-http
+      port: 4318
+      targetPort: 4318
+  sessionAffinity: None
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:v2.38.0
+          volumeMounts:
+            - mountPath: /etc/prometheus/
+              name: prometheus-config
+            - mountPath: /prometheus/
+              name: prometheus-data
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 9090
+      volumes:
+        - name: prometheus-config
+          configMap:
+            name: prometheus-config
+            items:
+              - key: prometheus-config
+                path: prometheus.yml
+        - name: prometheus-data
+          persistentVolumeClaim:
+            claimName: prom-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+spec:
+  selector:
+    app: prometheus
+  ports:
+    - name: prometheus
+      port: 9090
+      targetPort: 9090
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jaeger
+data:
+  SPAN_STORAGE_TYPE: elasticsearch
+  ES_SERVER_URLS: http://elastic:9200
+  METRICS_STORAGE_TYPE: prometheus
+  PROMETHEUS_SERVER_URL: http://prometheus:9090
+
+  # spark-dependencies
+  STORAGE: elasticsearch
+  ES_NODES: http://elastic:9200
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector
+data:
+  otel-collector-config: |-
+    receivers:
+      otlp:
+        protocols:
+          grpc: 
+            endpoint: 0.0.0.0:4317
+          http: 
+            endpoint: 0.0.0.0:4318
+      jaeger:
+        protocols:
+          thrift_http:
+            endpoint: 0.0.0.0:14268
+          thrift_compact:
+            endpoint: 0.0.0.0:6831
+
+
+      # Dummy receiver that's never used, because a pipeline is required to have one.
+      otlp/spanmetrics:
+        protocols:
+          grpc:
+            endpoint: "localhost:65535"
+
+    exporters:
+      prometheus:
+        endpoint: "0.0.0.0:8889"
+
+      jaeger:
+        endpoint: "jaeger-collector:14250"
+        tls:
+          insecure: true
+
+    processors:
+      batch:
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 200
+      spanmetrics:
+        metrics_exporter: prometheus
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp,jaeger]
+          processors: [spanmetrics, batch]
+          exporters: [jaeger]
+        # The exporter name in this pipeline must match the spanmetrics.metrics_exporter name.
+        # The receiver is just a dummy and never used; added to pass validation requiring at least one receiver in a pipeline.
+        metrics/spanmetrics:
+          receivers: [otlp/spanmetrics]
+          exporters: [prometheus]
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus-config: |-
+    global:
+      scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+      evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+      # scrape_timeout is set to the global default (10s).
+
+    scrape_configs:
+      - job_name: aggregated-trace-metrics
+        static_configs:
+        - targets: ['otel-collector:8889']
+```
