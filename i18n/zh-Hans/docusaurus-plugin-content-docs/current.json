@@ -26,5 +26,13 @@
   "sidebar.tutorialSidebar.category.nas": {
     "message": "nas",
     "description": "The label for category nas in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.dev": {
+    "message": "dev",
+    "description": "The label for category dev in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.golang": {
+    "message": "golang",
+    "description": "The label for category golang in sidebar tutorialSidebar"
   }
 }
