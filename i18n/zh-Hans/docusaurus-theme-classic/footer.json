@@ -36,7 +36,7 @@
     "description": "The label of footer link with label=GitHub linking to https://github.com/zx06"
   },
   "copyright": {
-    "message": "Copyright © 2022 Blog, Inc",
+    "message": "Copyright © 2023 Blog, Inc",
     "description": "The footer copyright"
   },
   "link.item.label.analytics": {

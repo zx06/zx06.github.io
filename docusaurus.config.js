@@ -60,7 +60,7 @@ const config = {
     ({
       umami: {
         websiteid: "9b24aa2f-1e38-4893-a7c8-3a28c6c567fd", // Insctructions below on how to find this
-        src: "https://umami.xuzhuo.xyz/umami.js", // Instructions below on how to find this
+        src: "https://umami.xuzhuo.xyz/script.js", // Instructions below on how to find this
       },
       navbar: {
         title: "zx06",
