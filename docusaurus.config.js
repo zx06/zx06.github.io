@@ -91,7 +91,7 @@ const config = {
             items: [
               {
                 label: "analytics",
-                to: "https://umami.xuzhuo.xyz/share/uvNw2ixg/blog",
+                to: "https://umami.xuzhuo.xyz/share/2ZRjlo4P7JJtfRX1/blog.xuzhuo.xyz",
               },
             ],
           },
